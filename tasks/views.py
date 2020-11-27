@@ -49,6 +49,24 @@ class taskList(APIView):
 
 
 class taskDetail(APIView):
+    def get(self, request, format=None):
+        try:
+            taskInfo = request.data['task']
+            user_id = taskInfo['user_id']
+            try:
+                user = OwnUser.objects.get(id=user_id)
+            except Exception as e:
+                return Resp.send_response(_status=400, _msg=ErrorMSG.get_msg(400), _data="User not found")
+                
+            task = User_Tasks.objects.filter(user_id=user)
+            print(task)
+            task_serializer = User_TasksSerializer(task, many=True)
+            print(task_serializer)
+            return Resp.send_response(_status=200, _msg=ErrorMSG.get_msg(200), _data=task_serializer.data)
+        except Exception as e:
+            print(e)
+            return Resp.send_response(_status=500, _msg=ErrorMSG.get_msg(500), _data=e)
+
     def put(self, request, format=None):
         try:
             taskInfo = request.data['task']
