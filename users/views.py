@@ -92,7 +92,8 @@ class userDetail(APIView):
             user_id = request.data['user']['id']
             user = OwnUser.objects.get(id=user_id)
             user.delete()
-            return Response(_status=204, _msg=ErrorMSG.get_msg(204))
+            print("aquii vamosss")
+            return Resp.send_response(_status=200, _msg=ErrorMSG.get_msg(200))
         except Exception as e:
             return Resp.send_response(_status=500, _msg=ErrorMSG.get_msg(500), _data=e)
 
